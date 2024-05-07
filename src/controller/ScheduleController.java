@@ -3,7 +3,6 @@ package controller;
 public class ScheduleController {
 	private EmployeeController employeeController;
 	private PatientController patientController;
-	private ShiftController shiftController;
 	private ScheduleDB scheduleDB;
 	private Schedule schedule;
 	
