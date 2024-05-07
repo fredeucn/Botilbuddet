@@ -2,6 +2,9 @@ package gui;
 
 import java.time.LocalDate;
 
+import controller.ScheduleController;
+import model.Schedule;
+
 public class UI {
 	private ScheduleController scheduleController;
 	
