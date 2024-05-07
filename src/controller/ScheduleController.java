@@ -1,5 +1,8 @@
 package controller;
 
+import model.Schedule;
+import model.ScheduleDB;
+
 public class ScheduleController {
 	private EmployeeController employeeController;
 	private PatientController patientController;
