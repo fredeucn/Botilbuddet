@@ -4,6 +4,6 @@ import model.Employee;
 
 public interface EmployeeDAO {
 	
-	public Employee findEmployeeById(int id);
+	public Employee findEmployeeById(int id) throws DataAccessException;
 	
 }
