@@ -25,9 +25,10 @@ public class EmployeeDB implements EmployeeDAO {
 		}
 	}
 	
-	public Employee findEmployeeById(String id) throws DataAccessException {
+	@Override
+	public Employee findEmployeeById(int id) throws DataAccessException {
 		try {
-			findEmployee.setString(1, id);
+			findEmployee.setInt(1, id);
 			ResultSet resultSet = findEmployee.executeQuery();
 			Employee employee = null;
 			if (resultSet.next()) {
