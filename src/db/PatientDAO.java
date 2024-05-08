@@ -1,5 +1,7 @@
 package db;
 
+import model.Patient;
+
 public interface PatientDAO {
-	public void findPatientById(int id);
+	public Patient findPatientById(int id) throws DataAccessException;
 }

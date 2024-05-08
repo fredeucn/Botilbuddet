@@ -16,6 +16,16 @@ public class Patient {
 		this.patientId = patientId;
 	}
 	
+	
+	
+	@Override
+	public String toString() {
+		return "Patient [name=" + name + ", email=" + email + ", phoneNumber=" + phoneNumber + ", patientNote="
+				+ patientNote + ", patientId=" + patientId + "]";
+	}
+
+
+
 	public String getEmail() {
 		return email;
 	}
