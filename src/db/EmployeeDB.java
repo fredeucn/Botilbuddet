@@ -25,9 +25,18 @@ public class EmployeeDB implements EmployeeDAO {
 		}
 	}
 	
-	@Override
-	public Employee findEmployeeById(int id) {
-		return null;
+	public Employee findEmployeeById(String id) throws DataAccessException {
+		try {
+			findEmployee.setString(1, id);
+			ResultSet resultSet = findEmployee.executeQuery();
+			Employee employee = null;
+			if (resultSet.next()) {
+				employee = buildObject(resultSet);
+			}
+			return employee;
+		} catch (SQLException e) {
+			throw new DataAccessException(e, "Could not find customer by phoneNumber = " + id);
+		}
 	}
 	
 	private Employee buildObject(ResultSet resultSet) throws SQLException {
