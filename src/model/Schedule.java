@@ -1,5 +1,7 @@
 package model;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Schedule {
@@ -10,9 +12,18 @@ public class Schedule {
 	private String description;
 	
 	
-	public Schedule() {
-		// TODO Auto-generated constructor stub
+	public Schedule(String description, String name) {
+		periods = new ArrayList<>();
+		this.name = name;
+		this.description = description;
+		
+		LocalDate date = LocalDate.now();
+		DateTimeFormatter formatterYear = DateTimeFormatter.ofPattern("yyyy");
+		DateTimeFormatter formatterMonth = DateTimeFormatter.ofPattern("MMMM");
+		this.year = date.format(formatterYear);
+		this.month = date.format(formatterMonth);
 	}
+	
 	
 	public String getDescription() {
 		return description;
