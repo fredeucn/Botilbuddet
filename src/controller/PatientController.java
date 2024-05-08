@@ -1,13 +1,17 @@
 package controller;
 
+import db.DataAccessException;
 import db.PatientDB;
 import model.Patient;
 
 public class PatientController {
 	private PatientDB patientDB;
 	
-	public Patient findPatientById(int id) {
-		return null;
-		
+	public PatientController() throws DataAccessException {
+		patientDB = new PatientDB();
+	}
+	
+	public Patient findPatientById(int id) throws DataAccessException {
+		return patientDB.findPatientById(id);
 	}
 }

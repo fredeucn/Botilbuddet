@@ -10,7 +10,8 @@ import model.Patient;
 public class PatientDB implements PatientDAO {
 	
 	// remember " " spaces when splitting up the Query with +
-	private static final String findPatientQuery = "SELECT patient.id, phone_number, patient.name, patient.email, patient_note FROM patient "
+	private static final String findPatientQuery = "SELECT patient.id, phone_number, patient.name, patient.email, patient_note "
+			+ "FROM patient "
 			+ "WHERE patient.id = ?";
 	private PreparedStatement findPatient;
 
