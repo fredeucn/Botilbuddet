@@ -1,9 +1,15 @@
 package gui;
 
+import controller.EmployeeController;
+import db.DataAccessException;
+import model.Employee;
+
 public class Main {
-	public static void main(String[] args) {
-		for (int i = 0; i < 10; i++) {
-			System.out.println("Count: " + i);
-		}
+	private static EmployeeController employeeController;
+	
+	public static void main(String[] args) throws DataAccessException {
+		employeeController = new EmployeeController();
+		Employee e = employeeController.findEmployeeById(1);
+		System.out.println(e.toString());
 	}
 }

@@ -19,13 +19,11 @@ public class Employee {
 		this.employeeId = employeeId;
 	}
 	
-	
 	@Override
 	public String toString() {
 		return "Employee [name=" + name + ", employeeType=" + employeeType + ", email=" + email + ", phoneNumber="
 				+ phoneNumber + ", address=" + address + ", salary=" + salary + ", employeeId=" + employeeId + "]";
 	}
-
 
 	public String getName() {
 		return name;

@@ -9,11 +9,11 @@ import model.Employee;
 
 public class EmployeeDB implements EmployeeDAO {
 	
-	
-	private static final String findEmployeeQuery = "SELECT phone_number, name, employee_type, city.zip, street_name, street_number, city "
-			+ "FROM employee INNER JOIN address ON employee.address_id = address.id "
-			+ "INNER JOIN city ON address.zip = city.zip "
-			+ "WHERE id = ?";
+	// remember " " spaces when splitting up the Query with +
+	private static final String findEmployeeQuery = "SELECT employee.id, phone_number, employee.name, employee.email, salary, employee_type, city.zip, street_name, house_number, city.name as city_name FROM employee "
+			+ "INNER JOIN address ON employee.address_id = address.id "
+			+ "INNER JOIN city ON address.city_zip = city.zip "
+			+ "WHERE employee.id = ?";
 	private PreparedStatement findEmployee;
 
 	public EmployeeDB() throws DataAccessException {
@@ -36,7 +36,7 @@ public class EmployeeDB implements EmployeeDAO {
 			}
 			return employee;
 		} catch (SQLException e) {
-			throw new DataAccessException(e, "Could not find customer by phoneNumber = " + id);
+			throw new DataAccessException(e, "Could not find employee by id = " + id);
 		}
 	}
 	
@@ -46,7 +46,7 @@ public class EmployeeDB implements EmployeeDAO {
 				resultSet.getString("employee_type"),
 				resultSet.getString("email"),
 				resultSet.getString("phone_number"),
-				resultSet.getString("street_name") + " " + resultSet.getString("street_number") + " " + resultSet.getString("zip") + " " + resultSet.getString("city"),
+				resultSet.getString("street_name") + " " + resultSet.getString("house_number") + " " + resultSet.getString("zip") + " " + resultSet.getString("city_name"),
 				resultSet.getFloat("salary"),
 				resultSet.getInt("id"));
 		return employee;
