@@ -1,4 +1,4 @@
-package model;
+package db;
 
 public class PatientDB implements PatientDAO {
 

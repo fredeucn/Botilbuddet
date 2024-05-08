@@ -1,7 +1,7 @@
 package controller;
 
+import db.ScheduleDB;
 import model.Schedule;
-import model.ScheduleDB;
 
 public class ScheduleController {
 	private EmployeeController employeeController;

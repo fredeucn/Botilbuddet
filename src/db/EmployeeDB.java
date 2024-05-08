@@ -1,4 +1,6 @@
-package model;
+package db;
+
+import model.Employee;
 
 public class EmployeeDB implements EmployeeDAO {
 	
@@ -6,5 +8,6 @@ public class EmployeeDB implements EmployeeDAO {
 	public Employee findEmployeeById(int id) {
 		return null;
 	}
+	
 	
 }

@@ -1,4 +1,6 @@
-package model;
+package db;
+
+import model.Shift;
 
 public class ShiftDB implements ShiftDAO {
 

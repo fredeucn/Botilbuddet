@@ -1,4 +1,6 @@
-package model;
+package db;
+
+import model.Employee;
 
 public interface EmployeeDAO {
 	

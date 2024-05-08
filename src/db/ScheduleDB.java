@@ -1,4 +1,6 @@
-package model;
+package db;
+
+import model.Schedule;
 
 public class ScheduleDB implements ScheduleDAO{
 

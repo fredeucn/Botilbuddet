@@ -1,7 +1,7 @@
 package controller;
 
+import db.EmployeeDB;
 import model.Employee;
-import model.EmployeeDB;
 
 public class EmployeeController {
 	private EmployeeDB employeeDB;

@@ -1,7 +1,7 @@
 package controller;
 
+import db.PatientDB;
 import model.Patient;
-import model.PatientDB;
 
 public class PatientController {
 	private PatientDB patientDB;
