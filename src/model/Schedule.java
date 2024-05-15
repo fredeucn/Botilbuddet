@@ -12,7 +12,7 @@ public class Schedule {
 	private String description;
 	
 	
-	public Schedule(String description, String name) {
+	public Schedule(String name, String description) {
 		periods = new ArrayList<>();
 		this.name = name;
 		this.description = description;
@@ -57,8 +57,8 @@ public class Schedule {
 		this.name = name;
 	}
 	
-	public void setPeriods(ArrayList<Period> periods) {
-		this.periods = periods;
+	public void addPeriod(Period period) {
+		periods.add(period);
 	}
 	
 	public void setYear(String year) {
