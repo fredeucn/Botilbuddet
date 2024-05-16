@@ -1,7 +1,8 @@
 package db;
 
+import model.Period;
 import model.Shift;
 
 public interface PeriodDAO {
-	public int savePeriod(Shift currentPeriod, int scheduleId);
+	public int savePeriod(Period currentPeriod, int scheduleId);
 }

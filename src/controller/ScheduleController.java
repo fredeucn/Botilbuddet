@@ -72,8 +72,8 @@ public class ScheduleController {
 		currentSchedule.addPeriod(currentShift);
 	}
 	
-	public void saveSchedule() {
-		
+	public void saveSchedule(Schedule currentSchedule) {
+		scheduleDB.saveSchedule(currentSchedule);
 	}
 }	
 

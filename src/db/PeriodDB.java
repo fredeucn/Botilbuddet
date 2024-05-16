@@ -1,12 +1,14 @@
 package db;
 
-import model.Shift;
+import model.Period;
 
 public class PeriodDB implements PeriodDAO{
-
+	ShiftDB shiftDB;
+	
 	@Override
-	public int savePeriod(Shift currentPeriod, int scheduleId) {
+	public int savePeriod(Period currentPeriod, int scheduleId) {
 		// TODO Auto-generated method stub
+		shiftDB.saveShift(currentPeriod, scheduleId);
 		return 0;
 	}
 
