@@ -1,5 +1,6 @@
 package controller;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -20,6 +21,7 @@ public class ScheduleController {
 	public ScheduleController() throws DataAccessException {
 		employeeController = new EmployeeController();
 		patientController = new PatientController();
+		scheduleDB = new ScheduleDB();
 	}
 	
 	public void createSchedule(String name, String description) {
@@ -72,7 +74,7 @@ public class ScheduleController {
 		currentSchedule.addPeriod(currentShift);
 	}
 	
-	public void saveSchedule(Schedule currentSchedule) {
+	public void saveSchedule() throws SQLException {
 		scheduleDB.saveSchedule(currentSchedule);
 	}
 }	

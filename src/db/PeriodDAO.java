@@ -1,8 +1,10 @@
 package db;
 
+import java.sql.SQLException;
+
 import model.Period;
 import model.Shift;
 
 public interface PeriodDAO {
-	public int savePeriod(Period currentPeriod, int scheduleId);
+	public void savePeriod(Shift shift, int scheduleId) throws SQLException;
 }
