@@ -68,10 +68,18 @@ public class ScheduleController {
 		
 		currentShift.setStartTime(startDateTime);
 		currentShift.setEndTime(endDateTime);
+		currentShift.setType(type);
 	}
 	
 	public void addPeriod() {
-		currentSchedule.addPeriod(currentShift);
+		if (currentSchedule.getDate() == null) { // set date of schedule based on the first period added to schedule
+			currentSchedule.setDate(currentDate);
+		}
+		
+		if (currentSchedule.getDate().getMonthValue() == currentDate.getMonthValue()) {
+			// period added, period matches month of schedule
+			currentSchedule.addPeriod(currentShift);
+		}
 	}
 	
 	public void saveSchedule() throws SQLException {

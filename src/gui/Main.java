@@ -27,12 +27,19 @@ public class Main {
 		System.out.println(patient.toString());
 		
 		scheduleController.createSchedule("propzchedule", "Schedule for props");
+		
 		scheduleController.findEmployeeById(2);
 		scheduleController.findPatientById(1);
-		scheduleController.chooseDate(LocalDate.now());
+		scheduleController.chooseDate(LocalDate.now().plusMonths(2));
 		scheduleController.chooseType("dag");
-		
 		scheduleController.addPeriod();
+		
+		scheduleController.findEmployeeById(1);
+		scheduleController.findPatientById(2);
+		scheduleController.chooseDate(LocalDate.now().plusMonths(3));
+		scheduleController.chooseType("aften");
+		scheduleController.addPeriod();
+
 		scheduleController.saveSchedule();
 		
 	}

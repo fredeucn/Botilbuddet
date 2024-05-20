@@ -1,14 +1,12 @@
 package model;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Schedule {
 	private ArrayList<Period> periods;
 	private String name;
-	private String year;
-	private String month;
+	private LocalDate date;
 	private String description;
 	
 	
@@ -16,21 +14,10 @@ public class Schedule {
 		periods = new ArrayList<>();
 		this.name = name;
 		this.description = description;
-		
-		LocalDate date = LocalDate.now();
-		DateTimeFormatter formatterYear = DateTimeFormatter.ofPattern("yyyy");
-		DateTimeFormatter formatterMonth = DateTimeFormatter.ofPattern("MMMM");
-		this.year = date.format(formatterYear);
-		this.month = date.format(formatterMonth);
 	}
-	
 	
 	public String getDescription() {
 		return description;
-	}
-	
-	public String getMonth() {
-		return month;
 	}
 	
 	public String getName() {
@@ -41,16 +28,8 @@ public class Schedule {
 		return periods;
 	}
 	
-	public String getYear() {
-		return year;
-	}
-	
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	
-	public void setMonth(String month) {
-		this.month = month;
 	}
 	
 	public void setName(String name) {
@@ -60,9 +39,13 @@ public class Schedule {
 	public void addPeriod(Period period) {
 		periods.add(period);
 	}
-	
-	public void setYear(String year) {
-		this.year = year;
+
+	public LocalDate getDate() {
+		return date;
+	}
+
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 	
 	

@@ -32,7 +32,7 @@ public class PeriodDB implements PeriodDAO{
 		savePeriod.setTimestamp(2, java.sql.Timestamp.valueOf(shift.getEndTime()));
 		savePeriod.setInt(3, scheduleId);
 		savePeriod.setInt(4, shift.getEmployee().getEmployeeId());
-		savePeriod.setString(5, "Standard location");
+		savePeriod.setInt(5, 1);
 		savePeriod.executeUpdate();
 		
 		int periodId = 0;

@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import model.Shift;
 
 public class ShiftDB implements ShiftDAO {
-	private static final String saveShiftQuery = "insert into period (period_id, type, overtime_salary, patient_id) values ( ?, ?, ?, ?)";
+	private static final String saveShiftQuery = "insert into shift (period_id, type, overtime_salary, patient_id) values (?, ?, ?, ?)";
 	private PreparedStatement saveShift;
 	
 	public ShiftDB() throws DataAccessException {
@@ -26,7 +26,7 @@ public class ShiftDB implements ShiftDAO {
 		saveShift.setFloat(3, shift.getOvertimeSalary());
 		saveShift.setInt(4, shift.getPatient().getPatientId());
 		
-		saveShift.executeQuery();
+		saveShift.executeUpdate();
 		
 	}
 	

@@ -1,11 +1,12 @@
 package db;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
-import model.Employee;
 import model.Period;
 import model.Schedule;
 import model.Shift;
@@ -27,9 +28,15 @@ public class ScheduleDB implements ScheduleDAO{
 	}
 	@Override
 	public void saveSchedule(Schedule schedule) throws SQLException {
+		// convert localDate to SQL date
+		Date sqlDate = null;
+		if(schedule.getDate() != null) {
+			sqlDate = Date.valueOf(schedule.getDate());
+		}
+		
 		saveSchedule.setString(1, schedule.getName());
 		saveSchedule.setString(2, schedule.getDescription());
-		saveSchedule.setString(3, schedule.getMonth());
+		saveSchedule.setDate(3, sqlDate);
 		saveSchedule.executeUpdate();
 		int scheduleId = 0;
 		
