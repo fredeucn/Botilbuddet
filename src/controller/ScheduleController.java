@@ -85,5 +85,6 @@ public class ScheduleController {
 	public void saveSchedule() throws SQLException {
 		scheduleDB.saveSchedule(currentSchedule);
 	}
+	
 }	
 
