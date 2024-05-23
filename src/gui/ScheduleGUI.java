@@ -16,6 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class ScheduleGUI extends JFrame {
 
@@ -58,14 +60,6 @@ public class ScheduleGUI extends JFrame {
 		gbl_topPanel.rowWeights = new double[]{0.0, 0.0};
 		topPanel.setLayout(gbl_topPanel);
 		
-		JLabel lblTitle = new JLabel("Lav Vagtplan");
-		lblTitle.setFont(new Font("Arial", Font.BOLD, 16));
-		GridBagConstraints gbc_lblTitle = new GridBagConstraints();
-		gbc_lblTitle.insets = new Insets(5, 5, 5, 5);
-		gbc_lblTitle.gridx = 1;
-		gbc_lblTitle.gridy = 0;
-		topPanel.add(lblTitle, gbc_lblTitle);
-		
 		JButton btnAutoSchedule = new JButton("Autofyld Vagtplan");
 		btnAutoSchedule.setBackground(new Color(255, 255, 255));
 		btnAutoSchedule.setEnabled(false);
@@ -74,18 +68,36 @@ public class ScheduleGUI extends JFrame {
 		gbc_btnAutoSchedule.anchor = GridBagConstraints.WEST;
 		gbc_btnAutoSchedule.insets = new Insets(5, 5, 5, 5);
 		gbc_btnAutoSchedule.gridx = 0;
-		gbc_btnAutoSchedule.gridy = 1;
+		gbc_btnAutoSchedule.gridy = 0;
 		topPanel.add(btnAutoSchedule, gbc_btnAutoSchedule);
+		
+		JLabel lblTitle = new JLabel("Lav Vagtplan");
+		lblTitle.setFont(new Font("Arial", Font.BOLD, 16));
+		GridBagConstraints gbc_lblTitle = new GridBagConstraints();
+		gbc_lblTitle.insets = new Insets(5, 5, 5, 5);
+		gbc_lblTitle.gridx = 1;
+		gbc_lblTitle.gridy = 0;
+		topPanel.add(lblTitle, gbc_lblTitle);
 		
 		JButton btnSaveSchedule = new JButton("Frigiv Vagtplan");
 		btnSaveSchedule.setBackground(new Color(255, 255, 255));
 		btnSaveSchedule.setFont(new Font("Arial", Font.PLAIN, 14));
 		GridBagConstraints gbc_btnSaveSchedule = new GridBagConstraints();
-		gbc_btnSaveSchedule.insets = new Insets(5, 5, 5, 5);
+		gbc_btnSaveSchedule.insets = new Insets(5, 5, 5, 0);
 		gbc_btnSaveSchedule.anchor = GridBagConstraints.EAST;
 		gbc_btnSaveSchedule.gridx = 2;
-		gbc_btnSaveSchedule.gridy = 1;
+		gbc_btnSaveSchedule.gridy = 0;
 		topPanel.add(btnSaveSchedule, gbc_btnSaveSchedule);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"John"}));
+		comboBox.setFont(new Font("Arial", Font.PLAIN, 14));
+		GridBagConstraints gbc_comboBox = new GridBagConstraints();
+		gbc_comboBox.anchor = GridBagConstraints.WEST;
+		gbc_comboBox.insets = new Insets(5, 5, 5, 5);
+		gbc_comboBox.gridx = 0;
+		gbc_comboBox.gridy = 1;
+		topPanel.add(comboBox, gbc_comboBox);
 		
 		JPanel CalendarPanel = new PanelCalendar(5, 2024);
 		contentPane.add(CalendarPanel, BorderLayout.CENTER);

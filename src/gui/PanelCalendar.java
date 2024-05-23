@@ -97,7 +97,7 @@ public class PanelCalendar extends JPanel {
 		for (Component component : getComponents()) {
 			CalendarCell cell = (CalendarCell) component;
 			if (!cell.isTitle()) {
-				cell.setText(calendar.get(Calendar.DATE) + "");
+				cell.setText(calendar.get(Calendar.DATE) + ".");
 				cell.setDate(calendar.getTime());
 				cell.inMonth(calendar.get(Calendar.MONTH) == month - 1);
 				calendar.add(Calendar.DATE, 1);

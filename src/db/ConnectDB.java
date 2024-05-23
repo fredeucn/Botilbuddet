@@ -9,12 +9,12 @@ public class ConnectDB {
 	private static ConnectDB connectDB;
 
 	private static final String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-	private static final String dbName = "botilbudet";
-	private static final String serverAddress = "localhost";
-	// private static final String serverAddress = "192.168.56.2";
+	private static final String dbName = "DMA-CSD-S232_10503078";
+	//private static final String serverAddress = "localhost";
+	private static final String serverAddress = "hildur.ucn.dk";
 	private static final int serverPort = 1433;
-	private static final String userName = "sa";
-	private static final String password = "secret";
+	private static final String userName = "DMA-CSD-S232_10503078";
+	private static final String password = "Password1!";
 
 	private ConnectDB() {
 		String connectionString = String.format(

@@ -35,9 +35,9 @@ public class CalendarCell extends JButton {
 	
 	public void inMonth(boolean active) {
 		if (active) {
-			setForeground(new Color(70, 70, 70));
+			setForeground(new Color(60, 60, 60));
 		} else {
-			setForeground(new Color(170, 170, 170));
+			setForeground(new Color(180, 180, 180));
 		}
 	}
 }
