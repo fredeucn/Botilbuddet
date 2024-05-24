@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.ArrayList;
+
 import db.DataAccessException;
 import db.EmployeeDB;
 import model.Employee;
@@ -18,5 +20,9 @@ public class EmployeeController {
 
 	public Employee getCurrentEmployee() {
 		return currentEmployee;
+	}
+	
+	public ArrayList<Employee> getEmployees() throws DataAccessException {
+		return employeeDB.findEmployees();
 	}
 }

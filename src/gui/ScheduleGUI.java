@@ -6,28 +6,37 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.border.LineBorder;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import java.awt.SystemColor;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
+import controller.EmployeeController;
+import controller.ScheduleController;
+import db.DataAccessException;
+import model.Employee;
+import java.awt.GridLayout;
+import java.awt.Rectangle;
+import java.awt.Dimension;
+import javax.swing.border.EmptyBorder;
 
 public class ScheduleGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JPanel CalendarPanel;
+	private ScheduleController scheduleController;
+	private EmployeeController employeeController;
+	private PanelCalendar calendarPanel;
 	private JLabel lblMonthYear;
+	private JComboBox chooseEmployee;
 	
 	/**
 	 * Launch the application.
@@ -47,11 +56,12 @@ public class ScheduleGUI extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws DataAccessException 
 	 */
-	public ScheduleGUI() {
+	public ScheduleGUI() throws DataAccessException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 649, 635);
-		contentPane = new JPanel();
+		JPanel contentPane = new JPanel();
 
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -62,7 +72,7 @@ public class ScheduleGUI extends JFrame {
 		gbl_topPanel.columnWidths = new int[] {150, 175, 150};
 		gbl_topPanel.rowHeights = new int[] {40, 40, 40};
 		gbl_topPanel.columnWeights = new double[]{1.0, 0.0, 1.0};
-		gbl_topPanel.rowWeights = new double[]{0.0, 0.0, 0.0};
+		gbl_topPanel.rowWeights = new double[]{0.0, 1.0, 0.0};
 		topPanel.setLayout(gbl_topPanel);
 		
 		JButton btnAutoSchedule = new JButton("Autofyld Vagtplan");
@@ -103,16 +113,15 @@ public class ScheduleGUI extends JFrame {
 		gbc_lblEmployee.gridy = 1;
 		topPanel.add(lblEmployee, gbc_lblEmployee);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBackground(SystemColor.window);
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"John"}));
-		comboBox.setFont(new Font("Arial", Font.PLAIN, 14));
-		GridBagConstraints gbc_comboBox = new GridBagConstraints();
-		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox.insets = new Insets(5, 5, 5, 5);
-		gbc_comboBox.gridx = 1;
-		gbc_comboBox.gridy = 1;
-		topPanel.add(comboBox, gbc_comboBox);
+		chooseEmployee = new JComboBox();
+		chooseEmployee.setBackground(SystemColor.window);
+		chooseEmployee.setFont(new Font("Arial", Font.PLAIN, 14));
+		GridBagConstraints gbc_chooseEmployee = new GridBagConstraints();
+		gbc_chooseEmployee.fill = GridBagConstraints.HORIZONTAL;
+		gbc_chooseEmployee.insets = new Insets(5, 5, 5, 5);
+		gbc_chooseEmployee.gridx = 1;
+		gbc_chooseEmployee.gridy = 1;
+		topPanel.add(chooseEmployee, gbc_chooseEmployee);
 		
 		JButton btnMonthLeft = new JButton("<");
 		btnMonthLeft.addActionListener(new ActionListener() {
@@ -152,10 +161,9 @@ public class ScheduleGUI extends JFrame {
 		gbc_btnMonthRight.gridy = 2;
 		topPanel.add(btnMonthRight, gbc_btnMonthRight);
 		
-		CalendarPanel = new PanelCalendar(5, 2024);
-		contentPane.add(CalendarPanel, BorderLayout.CENTER);
+		calendarPanel = new PanelCalendar();
+		contentPane.add(calendarPanel, BorderLayout.CENTER);
 		
-        
         
         
         
@@ -163,23 +171,37 @@ public class ScheduleGUI extends JFrame {
         init();
 	}
 
-	private void init() {
-		
-		
-		
-		
+	private void init() throws DataAccessException {
+		scheduleController = new ScheduleController();
+		employeeController = new EmployeeController();
+		updateMonthYearLabel();
+		updateChooseEmployee();
 	}
 	
+	private void updateChooseEmployee() throws DataAccessException {
+		ArrayList<Employee> employees = employeeController.getEmployees(); // fetch employees from database
+		for (Employee currentEmployee : employees) {
+			chooseEmployee.addItem(currentEmployee.getName()); // add each found employee to ComboBox
+		}
+	}
+
 	private void updateMonthYearLabel() {
-		
+		LocalDate date = calendarPanel.getDate();
+		lblMonthYear.setText(date.getMonth() + " - " + date.getYear());
 	}
 	
 	private void btnMonthLeft() {
-		
+		LocalDate date = calendarPanel.getDate();
+		date = date.minusMonths(1);
+		calendarPanel.setDate(date.getMonthValue(), date.getYear());
+		updateMonthYearLabel();
 	}
 
 	private void btnMonthRight() {
-		
+		LocalDate date = calendarPanel.getDate();
+		date = date.plusMonths(1);
+		calendarPanel.setDate(date.getMonthValue(), date.getYear());
+		updateMonthYearLabel();
 	}
 	
 	

@@ -4,11 +4,17 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+
+import model.Period;
 
 public class PanelCalendar extends JPanel {
 
@@ -63,16 +69,14 @@ public class PanelCalendar extends JPanel {
 	private CalendarCell cell_41;
 	private CalendarCell cell_42;
 
-	private int month;
-	private int year;
+	private LocalDate today;
+	private LocalDate date;
 	
 	/**
 	 * Create the panel.
 	 */
-	public PanelCalendar(int month, int year) {
+	public PanelCalendar() {
 		initComponents();
-		this.month = month;
-		this.year = year;
         init();
 	}
 	
@@ -84,13 +88,14 @@ public class PanelCalendar extends JPanel {
 		fre.setTitle(true);
 		lør.setTitle(true);
 		søn.setTitle(true);
-		setDate();
+		today = LocalDate.now();
+        setDate(today.getMonthValue(), today.getYear());
 	}
 	
-	private void setDate() {
+	private void updateCalendar() {
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.YEAR, year);
-		calendar.set(Calendar.MONTH, month - 1);
+		calendar.set(Calendar.YEAR, date.getYear());
+		calendar.set(Calendar.MONTH, date.getMonthValue() - 1);
 		calendar.set(Calendar.DATE, 1);
 		int startDay = calendar.get(Calendar.DAY_OF_WEEK) - 2;
 		calendar.add(Calendar.DATE, - startDay);
@@ -99,10 +104,19 @@ public class PanelCalendar extends JPanel {
 			if (!cell.isTitle()) {
 				cell.setText(calendar.get(Calendar.DATE) + ".");
 				cell.setDate(calendar.getTime());
-				cell.inMonth(calendar.get(Calendar.MONTH) == month - 1);
+				cell.inMonth(calendar.get(Calendar.MONTH) == date.getMonthValue() - 1);
 				calendar.add(Calendar.DATE, 1);
 			}
 		}
+	}
+	
+	public void setDate(int month, int year) {
+		this.date = LocalDate.of(year, month, 1);
+		updateCalendar();
+	}
+	
+	public LocalDate getDate() {
+		return date;
 	}
 
 	private void initComponents() {
