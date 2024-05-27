@@ -3,6 +3,11 @@ package model;
 import java.time.LocalDateTime;
 
 public class Period {
+	@Override
+	public String toString() {
+		return "Period [startTime=" + startTime + ", endTime=" + endTime + ", employee=" + employee + "]";
+	}
+
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
 	private Employee employee;

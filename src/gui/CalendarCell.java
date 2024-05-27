@@ -5,12 +5,15 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
+import db.DataAccessException;
 import model.Period;
 
 /*
@@ -31,7 +34,11 @@ public class CalendarCell extends JButton {
 		setLayout(new GridLayout(0, 1, 10, 10)); // makes it possible to add multiple labels to our custom button
 		addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		cellClicked();
+        		try {
+					calendarCellClicked();
+				} catch (DataAccessException e1) {
+					e1.printStackTrace();
+				}
         	}
         });
 	}
@@ -75,21 +82,25 @@ public class CalendarCell extends JButton {
 		for (Period currentPeriod : periods) {
 			JLabel label = new JLabel(); // create new label
 			
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 			String displayText = ""; // construct a display text
-			displayText += currentPeriod.getStartTime().getHour() + ":" + currentPeriod.getStartTime().getMinute();
-			displayText += " - " + currentPeriod.getEndTime().getHour() + ":" + currentPeriod.getEndTime().getMinute();
+			displayText += currentPeriod.getStartTime().format(formatter);
+			displayText += " - " + currentPeriod.getEndTime().format(formatter);
 			
 			label.setText(displayText); // set display text of label
 			label.setFont(new Font("Arial", Font.PLAIN, 14));
+			
+			// color
+			label.setForeground(new Color(55, 120, 135));
 			
 			add(label);
 		}
 	}
 	
-	private void cellClicked() {
+	private void calendarCellClicked() throws DataAccessException {
 		if (!isTitle()) {
-			System.out.println("Date clicked: " + this.date.toString());
-			
+			PanelCalendar panelCalendar = (PanelCalendar) SwingUtilities.getAncestorOfClass(PanelCalendar.class, this);;
+			panelCalendar.calendarCellClicked(this);
 		}
 	}
 }

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -11,23 +12,20 @@ import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import controller.EmployeeController;
 import controller.ScheduleController;
 import db.DataAccessException;
 import model.Employee;
-import java.awt.GridLayout;
-import java.awt.Rectangle;
-import java.awt.Dimension;
-import javax.swing.border.EmptyBorder;
 
 /*
  * Inspiration and kick start for the calendar functionality
@@ -41,7 +39,7 @@ public class ScheduleGUI extends JFrame {
 	private EmployeeController employeeController;
 	private PanelCalendar calendarPanel;
 	private JLabel lblMonthYear;
-	private JComboBox chooseEmployee;
+	private JComboBox<Employee> chooseEmployee;
 	
 	/**
 	 * Launch the application.
@@ -65,7 +63,7 @@ public class ScheduleGUI extends JFrame {
 	 */
 	public ScheduleGUI() throws DataAccessException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 649, 635);
+		setBounds(100, 100, 793, 828);
 		JPanel contentPane = new JPanel();
 
 		setContentPane(contentPane);
@@ -92,6 +90,7 @@ public class ScheduleGUI extends JFrame {
 		topPanel.add(btnAutoSchedule, gbc_btnAutoSchedule);
 		
 		JLabel lblTitle = new JLabel("Lav Vagtplan");
+		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setFont(new Font("Arial", Font.BOLD, 16));
 		GridBagConstraints gbc_lblTitle = new GridBagConstraints();
 		gbc_lblTitle.insets = new Insets(5, 5, 5, 5);
@@ -109,7 +108,7 @@ public class ScheduleGUI extends JFrame {
 		gbc_btnSaveSchedule.gridy = 0;
 		topPanel.add(btnSaveSchedule, gbc_btnSaveSchedule);
 		
-		JLabel lblEmployee = new JLabel("Medarbejder ");
+		JLabel lblEmployee = new JLabel("Medarbejder:");
 		lblEmployee.setFont(new Font("Arial", Font.PLAIN, 14));
 		GridBagConstraints gbc_lblEmployee = new GridBagConstraints();
 		gbc_lblEmployee.insets = new Insets(5, 5, 5, 5);
@@ -119,6 +118,11 @@ public class ScheduleGUI extends JFrame {
 		topPanel.add(lblEmployee, gbc_lblEmployee);
 		
 		chooseEmployee = new JComboBox();
+		chooseEmployee.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				employeeSelected();
+			}
+		});
 		chooseEmployee.setBackground(SystemColor.window);
 		chooseEmployee.setFont(new Font("Arial", Font.PLAIN, 14));
 		GridBagConstraints gbc_chooseEmployee = new GridBagConstraints();
@@ -177,17 +181,23 @@ public class ScheduleGUI extends JFrame {
 	}
 
 	private void init() throws DataAccessException {
+		chooseEmployee.setRenderer(new EmployeeLinesRenderer());
 		scheduleController = new ScheduleController();
 		employeeController = new EmployeeController();
-		//scheduleController.createSchedule(getName(), getName());
+		scheduleController.createSchedule("initial schedule", "no description");
 		updateMonthYearLabel();
 		updateChooseEmployee();
+	}
+	
+	// triggers when a new employee is selected in the combo box
+	private void employeeSelected() {
+		
 	}
 	
 	private void updateChooseEmployee() throws DataAccessException {
 		ArrayList<Employee> employees = employeeController.getEmployees(); // fetch employees from database
 		for (Employee currentEmployee : employees) {
-			chooseEmployee.addItem(currentEmployee.getName()); // add each found employee to ComboBox
+			chooseEmployee.addItem(currentEmployee); // add each found employee to ComboBox
 		}
 	}
 
@@ -210,25 +220,19 @@ public class ScheduleGUI extends JFrame {
 		updateMonthYearLabel();
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	/*
+	 * triggers when a cell in the calendar is clicked
+	 * this returns a date, we create a new shift from the schedule controller
+	 */
+	public void calendarCellClicked(CalendarCell calendarCell) throws DataAccessException {
+		Employee employee = (Employee) chooseEmployee.getSelectedItem();
+		scheduleController.findEmployeeById(employee.getEmployeeId());
+		
+		LocalDate localDate = calendarCell.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); // convert date to local date
+		scheduleController.chooseDate(localDate);
+		
+		// open a new periodGUI for user inputs to create the final shift
+		Frame periodGUI = new PeriodGUI(calendarCell, scheduleController, localDate, employee);
+		periodGUI.setVisible(true);
+	}
 }

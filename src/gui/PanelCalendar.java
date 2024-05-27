@@ -4,12 +4,17 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Window;
 import java.time.LocalDate;
 import java.util.Calendar;
 
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
+
+import controller.ScheduleController;
+import db.DataAccessException;
 
 /*
  * Inspiration and kick start for the calendar functionality
@@ -108,6 +113,14 @@ public class PanelCalendar extends JPanel {
 				calendar.add(Calendar.DATE, 1);
 			}
 		}
+	}
+	
+	public void calendarCellClicked(CalendarCell calendarCell) throws DataAccessException {
+		Window window = SwingUtilities.getWindowAncestor(this);
+	    if (window instanceof ScheduleGUI) {
+	        ScheduleGUI scheduleGUI = (ScheduleGUI) window;
+	        scheduleGUI.calendarCellClicked(calendarCell);
+	    }
 	}
 	
 	public void setDate(int month, int year) {

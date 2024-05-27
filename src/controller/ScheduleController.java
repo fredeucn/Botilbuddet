@@ -3,10 +3,10 @@ package controller;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import db.DataAccessException;
 import db.ScheduleDB;
+import model.Period;
 import model.Schedule;
 import model.Shift;
 
@@ -18,6 +18,10 @@ public class ScheduleController {
 	private Shift currentShift;
 	private LocalDate currentDate;
 	
+	public Schedule getCurrentSchedule() {
+		return currentSchedule;
+	}
+
 	public ScheduleController() throws DataAccessException {
 		employeeController = new EmployeeController();
 		patientController = new PatientController();
@@ -46,17 +50,17 @@ public class ScheduleController {
 		int endTimeHours = 0;
 		int endTimeMinutes = 0;
 		
-		if(type == "dag") {
+		if(type == "Dag") {
 			startTimeHours = 8;
 			startTimeMinutes = 0;
 			endTimeHours = 16;
 			endTimeMinutes = 0;
-		} else if(type == "aften") {
+		} else if(type == "Aften") {
 			startTimeHours = 16;
 			startTimeMinutes = 0;
 			endTimeHours = 23;
 			endTimeMinutes = 59;
-		} else if(type == "nat") {
+		} else if(type == "Nat") {
 			startTimeHours = 0;
 			startTimeMinutes = 0;
 			endTimeHours = 8;
@@ -71,7 +75,9 @@ public class ScheduleController {
 		currentShift.setType(type);
 	}
 	
-	public void addPeriod() {
+	public Period addPeriod() {
+		Period period = null;
+		
 		if (currentSchedule.getDate() == null) { // set date of schedule based on the first period added to schedule
 			currentSchedule.setDate(currentDate);
 		}
@@ -79,7 +85,10 @@ public class ScheduleController {
 		if (currentSchedule.getDate().getMonthValue() == currentDate.getMonthValue()) {
 			// period added, period matches month of schedule
 			currentSchedule.addPeriod(currentShift);
+			period = currentShift;
 		}
+		
+		return period;
 	}
 	
 	public void saveSchedule() throws SQLException {
