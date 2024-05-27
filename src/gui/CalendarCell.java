@@ -3,6 +3,8 @@ package gui;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -10,6 +12,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import model.Period;
+
+/*
+ * Inspiration and kick start for the calendar functionality
+ * https://www.youtube.com/watch?v=YivaMCfichQ
+ */
 
 public class CalendarCell extends JButton {
 
@@ -22,6 +29,11 @@ public class CalendarCell extends JButton {
 		periods = new ArrayList<>();
 		setContentAreaFilled(false);
 		setLayout(new GridLayout(0, 1, 10, 10)); // makes it possible to add multiple labels to our custom button
+		addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		cellClicked();
+        	}
+        });
 	}
 
 	public Date getDate() {
@@ -48,6 +60,11 @@ public class CalendarCell extends JButton {
 		}
 	}
 	
+	public void setPeriods(ArrayList<Period> periods) {
+		this.periods = periods;
+		updateLabels();
+	}
+	
 	public void addPeriod(Period period) {
 		periods.add(period);
 		updateLabels();
@@ -66,6 +83,13 @@ public class CalendarCell extends JButton {
 			label.setFont(new Font("Arial", Font.PLAIN, 14));
 			
 			add(label);
+		}
+	}
+	
+	private void cellClicked() {
+		if (!isTitle()) {
+			System.out.println("Date clicked: " + this.date.toString());
+			
 		}
 	}
 }

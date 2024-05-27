@@ -5,16 +5,16 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-import model.Period;
+/*
+ * Inspiration and kick start for the calendar functionality
+ * https://www.youtube.com/watch?v=YivaMCfichQ
+ */
 
 public class PanelCalendar extends JPanel {
 

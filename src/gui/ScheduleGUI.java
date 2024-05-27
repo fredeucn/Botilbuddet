@@ -29,6 +29,11 @@ import java.awt.Rectangle;
 import java.awt.Dimension;
 import javax.swing.border.EmptyBorder;
 
+/*
+ * Inspiration and kick start for the calendar functionality
+ * https://www.youtube.com/watch?v=YivaMCfichQ
+ */
+
 public class ScheduleGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -174,6 +179,7 @@ public class ScheduleGUI extends JFrame {
 	private void init() throws DataAccessException {
 		scheduleController = new ScheduleController();
 		employeeController = new EmployeeController();
+		//scheduleController.createSchedule(getName(), getName());
 		updateMonthYearLabel();
 		updateChooseEmployee();
 	}
