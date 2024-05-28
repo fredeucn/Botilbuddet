@@ -15,7 +15,8 @@ public class ScheduleDB implements ScheduleDAO{
 	PeriodDB periodDB;
 	
 	private static final String saveScheduleQuery = "insert into schedule (name, description, date) values (?, ?, ?)";	
-	private PreparedStatement saveSchedule;
+	private static final String findAllSchedulesQuery = "SELECT * FROM schedule";
+	private PreparedStatement saveSchedule, findAllSchedules;
 	
 	public ScheduleDB() throws DataAccessException {
 		periodDB = new PeriodDB();
@@ -23,7 +24,14 @@ public class ScheduleDB implements ScheduleDAO{
 			Connection connection = ConnectDB.getInstance().getConnection();
 			saveSchedule = connection.prepareStatement(saveScheduleQuery, java.sql.Statement.RETURN_GENERATED_KEYS);
 		} catch (SQLException e) {
-			throw new DataAccessException(e, "Could not prepare statement");
+			throw new DataAccessException(e, "Could not prepare statement saveScheduleQuery");
+		}
+		
+		try {
+			Connection connection = ConnectDB.getInstance().getConnection();
+			findAllSchedules = connection.prepareStatement(findAllSchedulesQuery);
+		} catch (SQLException e) {
+			throw new DataAccessException(e, "Could not prepare statement findAllSchedulesQuery");
 		}
 	}
 	@Override
@@ -57,6 +65,12 @@ public class ScheduleDB implements ScheduleDAO{
 			
 		}
 		
+	}
+	
+	@Override
+	public ResultSet checkDbUpdates() throws SQLException {
+		ResultSet resultSet = findAllSchedules.executeQuery();
+		return resultSet;
 	}
 
 }
