@@ -30,6 +30,7 @@ public class UpdateThread extends Thread {
 	@Override
 	public void run() {
 		while(running) {
+			System.out.println("Checkpoint");
 			try {
 				ResultSet resultSet = scheduleDB.checkDbUpdates();
 				if (resultSet.next()) {

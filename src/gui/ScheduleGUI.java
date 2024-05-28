@@ -40,11 +40,15 @@ public class ScheduleGUI extends JFrame {
 	private PanelCalendar calendarPanel;
 	private JLabel lblMonthYear;
 	private JComboBox<Employee> chooseEmployee;
+	private static UpdateThread updateThread;
 	
 	/**
 	 * Launch the application.
+	 * @throws DataAccessException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws DataAccessException {
+		updateThread = new UpdateThread();
+		updateThread.start();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
