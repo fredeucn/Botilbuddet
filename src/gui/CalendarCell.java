@@ -80,7 +80,7 @@ public class CalendarCell extends JButton {
 		removeAll();
 		if (periods != null) {
 			
-			Collections.sort(periods, Comparator.comparing(Period::getStartTime));
+			Collections.sort(periods, (Period p1, Period p2) -> p1.getStartTime().compareTo(p2.getStartTime()));
 			
 			for (Period currentPeriod : periods) {
                 LocalDate periodDate = currentPeriod.getStartTime().toLocalDate();
