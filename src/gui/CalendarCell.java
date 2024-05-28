@@ -5,9 +5,12 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -76,25 +79,29 @@ public class CalendarCell extends JButton {
 	private void updateLabels() {
 		removeAll();
 		if (periods != null) {
+			
+			Collections.sort(periods, Comparator.comparing(Period::getStartTime));
+			
 			for (Period currentPeriod : periods) {
-				if (currentPeriod.getStartTime().toLocalDate().equals(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())) {
-					JLabel label = new JLabel(); // create new label
-					
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-					String displayText = ""; // construct a display text
-					displayText += currentPeriod.getStartTime().format(formatter);
-					displayText += " - " + currentPeriod.getEndTime().format(formatter);
-					
-					label.setText(displayText); // set display text of label
-					label.setFont(new Font("Arial", Font.PLAIN, 14));
-					
-					// color
-					label.setForeground(new Color(55, 120, 135));
-					
-					add(label);
-				}
+                LocalDate periodDate = currentPeriod.getStartTime().toLocalDate();
+                if (periodDate.equals(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())) {
+                    JLabel label = new JLabel(); // create new label
+
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                    String displayText = currentPeriod.getStartTime().format(formatter) + " - " +
+                                         currentPeriod.getEndTime().format(formatter);
+
+                    label.setText(displayText); // set display text of label
+                    label.setFont(new Font("Arial", Font.PLAIN, 14));
+
+                    // color
+                    label.setForeground(new Color(55, 120, 135));
+
+                    add(label);
+                }
 			}
 		}
+			
 	}
 	
 	private void calendarCellClicked() throws DataAccessException {
