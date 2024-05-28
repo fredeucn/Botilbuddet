@@ -12,7 +12,7 @@ import model.Schedule;
 import model.Shift;
 
 public class ScheduleDB implements ScheduleDAO{
-	PeriodDB periodDB;
+	private PeriodDB periodDB;
 	
 	private static final String saveScheduleQuery = "insert into schedule (name, description, date) values (?, ?, ?)";	
 	private static final String findAllSchedulesQuery = "SELECT * FROM schedule";
