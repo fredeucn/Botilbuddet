@@ -5,7 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.util.ArrayList;
 
 import model.Period;
 import model.Schedule;
@@ -23,17 +23,12 @@ public class ScheduleDB implements ScheduleDAO{
 		try {
 			Connection connection = ConnectDB.getInstance().getConnection();
 			saveSchedule = connection.prepareStatement(saveScheduleQuery, java.sql.Statement.RETURN_GENERATED_KEYS);
+			findAllSchedules = connection.prepareStatement(findAllSchedulesQuery);
 		} catch (SQLException e) {
 			throw new DataAccessException(e, "Could not prepare statement saveScheduleQuery");
 		}
-		
-		try {
-			Connection connection = ConnectDB.getInstance().getConnection();
-			findAllSchedules = connection.prepareStatement(findAllSchedulesQuery);
-		} catch (SQLException e) {
-			throw new DataAccessException(e, "Could not prepare statement findAllSchedulesQuery");
-		}
 	}
+	
 	@Override
 	public void saveSchedule(Schedule schedule) throws SQLException {
 		// convert localDate to SQL date
@@ -68,9 +63,24 @@ public class ScheduleDB implements ScheduleDAO{
 	}
 	
 	@Override
-	public ResultSet checkDbUpdates() throws SQLException {
-		ResultSet resultSet = findAllSchedules.executeQuery();
-		return resultSet;
+	public ArrayList<Schedule> findAllSchedules() throws DataAccessException {
+		try {
+			ArrayList<Schedule> schedules = new ArrayList<Schedule>();
+			ResultSet resultSet = findAllSchedules.executeQuery();
+			
+			while (resultSet.next()) {
+				schedules.add(buildObject(resultSet));
+			}
+			return schedules;
+		} catch (Exception e) {
+			throw new DataAccessException(e, "No schedules could be found or access to database failed");
+		}
 	}
-
+	
+	private Schedule buildObject(ResultSet resultSet) throws SQLException {
+		Schedule schedule = new Schedule(
+				resultSet.getString("name"),
+				resultSet.getString("description"));
+		return schedule;
+	}
 }

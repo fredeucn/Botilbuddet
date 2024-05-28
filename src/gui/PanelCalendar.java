@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Window;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -15,8 +14,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 
-import controller.ScheduleController;
 import db.DataAccessException;
+import model.Employee;
 import model.Period;
 
 /*
@@ -77,6 +76,7 @@ public class PanelCalendar extends JPanel {
 	private CalendarCell cell_41;
 	private CalendarCell cell_42;
 
+	private Employee selectedEmployee;
 	private LocalDate today;
 	private LocalDate date;
 	
@@ -100,7 +100,7 @@ public class PanelCalendar extends JPanel {
         setDate(today.getMonthValue(), today.getYear(), null);
 	}
 	
-	private void updateCalendar(ArrayList<Period> periods) {
+	public void updateCalendar(ArrayList<Period> periods) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.YEAR, date.getYear());
 		calendar.set(Calendar.MONTH, date.getMonthValue() - 1);
@@ -114,6 +114,7 @@ public class PanelCalendar extends JPanel {
 				cell.setText(calendar.get(Calendar.DATE) + ".");
 				cell.setDate(calendar.getTime());
 				cell.inMonth(calendar.get(Calendar.MONTH) == date.getMonthValue() - 1);
+				cell.setSelectedEmployee(selectedEmployee);
 				cell.setPeriods(periods);
 				calendar.add(Calendar.DATE, 1);
 			}
@@ -126,6 +127,10 @@ public class PanelCalendar extends JPanel {
 	        ScheduleGUI scheduleGUI = (ScheduleGUI) window;
 	        scheduleGUI.calendarCellClicked(calendarCell);
 	    }
+	}
+	
+	public void setSelectedEmployee(Employee employee) {
+		this.selectedEmployee = employee;
 	}
 	
 	public void setDate(int month, int year, ArrayList<Period> periods) {

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,6 +27,8 @@ import controller.EmployeeController;
 import controller.ScheduleController;
 import db.DataAccessException;
 import model.Employee;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 /*
  * Inspiration and kick start for the calendar functionality
@@ -185,7 +188,7 @@ public class ScheduleGUI extends JFrame {
 	}
 
 	private void init() throws DataAccessException {
-		chooseEmployee.setRenderer(new EmployeeLinesRenderer());
+		//chooseEmployee.setRenderer(new EmployeeLinesRenderer());
 		scheduleController = new ScheduleController();
 		employeeController = new EmployeeController();
 		scheduleController.createSchedule("initial schedule", "no description");
@@ -195,7 +198,10 @@ public class ScheduleGUI extends JFrame {
 	
 	// triggers when a new employee is selected in the combo box
 	private void employeeSelected() {
-		
+		calendarPanel.setSelectedEmployee((Employee) chooseEmployee.getSelectedItem());
+		calendarPanel.updateCalendar(scheduleController.getCurrentSchedule().getPeriods());
+		calendarPanel.revalidate();
+		calendarPanel.repaint();
 	}
 	
 	private void updateChooseEmployee() throws DataAccessException {
@@ -236,7 +242,9 @@ public class ScheduleGUI extends JFrame {
 		scheduleController.chooseDate(localDate);
 		
 		// open a new periodGUI for user inputs to create the final shift
-		Frame periodGUI = new PeriodGUI(calendarCell, scheduleController, localDate, employee);
+		JDialog periodGUI = new PeriodGUI(scheduleController, localDate, employee);
 		periodGUI.setVisible(true);
+		calendarPanel.updateCalendar(scheduleController.getCurrentSchedule().getPeriods());
+		calendarPanel.revalidate();
 	}
 }

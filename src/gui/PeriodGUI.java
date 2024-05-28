@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,10 +30,9 @@ import model.Employee;
 import model.Patient;
 import model.Period;
 
-public class PeriodGUI extends JFrame {
+public class PeriodGUI extends JDialog {
 
 	private static final long serialVersionUID = 1L;
-	private CalendarCell calendarCell;
 	private PatientController patientController;
 	private ScheduleController scheduleController;
 	private LocalDate date;
@@ -47,13 +47,12 @@ public class PeriodGUI extends JFrame {
 	 * Create the frame.
 	 * @throws DataAccessException 
 	 */
-	public PeriodGUI(CalendarCell calendarCell, ScheduleController scheduleController, LocalDate date, Employee employee) throws DataAccessException {
-		this.calendarCell = calendarCell;
+	public PeriodGUI(ScheduleController scheduleController, LocalDate date, Employee employee) throws DataAccessException {
 		this.scheduleController = scheduleController;
 		this.date = date;
 		this.employee = employee;
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 437, 468);
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -192,6 +191,7 @@ public class PeriodGUI extends JFrame {
 	}
 
 	private void init() throws DataAccessException {
+		this.setModal(true);
 		patientController = new PatientController();
 		lblDateDisplay.setText(date.toString());
 		lblEmployeeDisplay.setText(employee.getEmployeeId() + ". " + employee.getName());
@@ -211,7 +211,6 @@ public class PeriodGUI extends JFrame {
 		scheduleController.findPatientById(patient.getPatientId());
 		scheduleController.chooseType(chooseType.getSelectedItem().toString());
 		Period period = scheduleController.addPeriod();
-		//calendarCell.addPeriod(period);
 		dispose();
 	}
 	

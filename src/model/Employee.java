@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class Employee {
 	private String name;
 	private String employeeType;
@@ -19,6 +21,23 @@ public class Employee {
 		this.employeeId = employeeId;
 	}
 	
+	@Override
+	public int hashCode() {
+		return Objects.hash(employeeId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Employee other = (Employee) obj;
+		return employeeId == other.employeeId;
+	}
+
 	@Override
 	public String toString() {
 		return "Employee [name=" + name + ", employeeType=" + employeeType + ", email=" + email + ", phoneNumber="

@@ -9,8 +9,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -18,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import db.DataAccessException;
+import model.Employee;
 import model.Period;
 
 /*
@@ -31,6 +30,7 @@ public class CalendarCell extends JButton {
 	private Date date;
 	private boolean title;
 	private ArrayList<Period> periods;
+	private Employee selectedEmployee;
 	
 	public CalendarCell() {
 		periods = new ArrayList<>();
@@ -79,34 +79,36 @@ public class CalendarCell extends JButton {
 	private void updateLabels() {
 		removeAll();
 		if (periods != null) {
-			
-			Collections.sort(periods, Comparator.comparing(Period::getStartTime));
-			
 			for (Period currentPeriod : periods) {
-                LocalDate periodDate = currentPeriod.getStartTime().toLocalDate();
-                if (periodDate.equals(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())) {
-                    JLabel label = new JLabel(); // create new label
+				if (currentPeriod.getEmployee().equals(selectedEmployee)) {
+					LocalDate periodDate = currentPeriod.getStartTime().toLocalDate();
+	                if (periodDate.equals(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())) {
+	                    JLabel label = new JLabel(); // create new label
 
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-                    String displayText = currentPeriod.getStartTime().format(formatter) + " - " +
-                                         currentPeriod.getEndTime().format(formatter);
+	                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+	                    String displayText = currentPeriod.getStartTime().format(formatter) + " - " +
+	                                         currentPeriod.getEndTime().format(formatter);
 
-                    label.setText(displayText); // set display text of label
-                    label.setFont(new Font("Arial", Font.PLAIN, 14));
+	                    label.setText(displayText); // set display text of label
+	                    label.setFont(new Font("Arial", Font.PLAIN, 14));
 
-                    // color
-                    label.setForeground(new Color(55, 120, 135));
+	                    // color
+	                    label.setForeground(new Color(55, 120, 135));
 
-                    add(label);
-                }
+	                    add(label);
+	                }
+				}
 			}
 		}
-			
 	}
 	
+	public void setSelectedEmployee(Employee selectedEmployee) {
+		this.selectedEmployee = selectedEmployee;
+	}
+
 	private void calendarCellClicked() throws DataAccessException {
 		if (!isTitle()) {
-			PanelCalendar panelCalendar = (PanelCalendar) SwingUtilities.getAncestorOfClass(PanelCalendar.class, this);;
+			PanelCalendar panelCalendar = (PanelCalendar) SwingUtilities.getAncestorOfClass(PanelCalendar.class, this);
 			panelCalendar.calendarCellClicked(this);
 		}
 	}
