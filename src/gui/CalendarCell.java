@@ -9,8 +9,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -80,7 +78,6 @@ public class CalendarCell extends JButton {
 		removeAll();
 		if (periods != null) {
 			
-			Collections.sort(periods, (Period p1, Period p2) -> p1.getStartTime().compareTo(p2.getStartTime()));
 			
 			for (Period currentPeriod : periods) {
                 LocalDate periodDate = currentPeriod.getStartTime().toLocalDate();
