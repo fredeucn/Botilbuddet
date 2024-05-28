@@ -117,7 +117,7 @@ public class ScheduleGUI extends JFrame {
 		gbc_lblEmployee.gridy = 1;
 		topPanel.add(lblEmployee, gbc_lblEmployee);
 		
-		chooseEmployee = new JComboBox();
+		chooseEmployee = new JComboBox<Employee>();
 		chooseEmployee.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				employeeSelected();
@@ -209,14 +209,14 @@ public class ScheduleGUI extends JFrame {
 	private void btnMonthLeft() {
 		LocalDate date = calendarPanel.getDate();
 		date = date.minusMonths(1);
-		calendarPanel.setDate(date.getMonthValue(), date.getYear());
+		calendarPanel.setDate(date.getMonthValue(), date.getYear(), scheduleController.getCurrentSchedule().getPeriods());
 		updateMonthYearLabel();
 	}
 
 	private void btnMonthRight() {
 		LocalDate date = calendarPanel.getDate();
 		date = date.plusMonths(1);
-		calendarPanel.setDate(date.getMonthValue(), date.getYear());
+		calendarPanel.setDate(date.getMonthValue(), date.getYear(), scheduleController.getCurrentSchedule().getPeriods());
 		updateMonthYearLabel();
 	}
 	

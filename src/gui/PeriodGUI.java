@@ -211,7 +211,7 @@ public class PeriodGUI extends JFrame {
 		scheduleController.findPatientById(patient.getPatientId());
 		scheduleController.chooseType(chooseType.getSelectedItem().toString());
 		Period period = scheduleController.addPeriod();
-		calendarCell.addPeriod(period);
+		//calendarCell.addPeriod(period);
 		dispose();
 	}
 	
