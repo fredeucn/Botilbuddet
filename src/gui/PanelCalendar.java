@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Window;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.swing.JPanel;
@@ -15,6 +17,7 @@ import javax.swing.border.LineBorder;
 
 import controller.ScheduleController;
 import db.DataAccessException;
+import model.Period;
 
 /*
  * Inspiration and kick start for the calendar functionality
@@ -94,22 +97,24 @@ public class PanelCalendar extends JPanel {
 		lør.setTitle(true);
 		søn.setTitle(true);
 		today = LocalDate.now();
-        setDate(today.getMonthValue(), today.getYear());
+        setDate(today.getMonthValue(), today.getYear(), null);
 	}
 	
-	private void updateCalendar() {
+	private void updateCalendar(ArrayList<Period> periods) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.YEAR, date.getYear());
 		calendar.set(Calendar.MONTH, date.getMonthValue() - 1);
 		calendar.set(Calendar.DATE, 1);
 		int startDay = calendar.get(Calendar.DAY_OF_WEEK) - 2;
 		calendar.add(Calendar.DATE, - startDay);
+		
 		for (Component component : getComponents()) {
 			CalendarCell cell = (CalendarCell) component;
 			if (!cell.isTitle()) {
 				cell.setText(calendar.get(Calendar.DATE) + ".");
 				cell.setDate(calendar.getTime());
 				cell.inMonth(calendar.get(Calendar.MONTH) == date.getMonthValue() - 1);
+				cell.setPeriods(periods);
 				calendar.add(Calendar.DATE, 1);
 			}
 		}
@@ -123,9 +128,9 @@ public class PanelCalendar extends JPanel {
 	    }
 	}
 	
-	public void setDate(int month, int year) {
+	public void setDate(int month, int year, ArrayList<Period> periods) {
 		this.date = LocalDate.of(year, month, 1);
-		updateCalendar();
+		updateCalendar(periods);
 	}
 	
 	public LocalDate getDate() {
