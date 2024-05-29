@@ -96,7 +96,7 @@ public class ScheduleOverviewGUI extends JFrame {
 		btnAddTestData.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					updateList2();
+					addTestData();
 				} catch (DataAccessException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -110,11 +110,7 @@ public class ScheduleOverviewGUI extends JFrame {
 		
 	}
 	
-	public static void updateList(ArrayList<Schedule> list) {
-		list.toArray(schedules);
-	}
-	
-	public static void updateList2() throws DataAccessException {
+	public static void addTestData() throws DataAccessException {
 		ScheduleDB scheduleDB = new ScheduleDB();
 		Schedule schedule = new Schedule("test", "test");
 		schedule.setDate(LocalDate.now());
