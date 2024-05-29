@@ -4,13 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -27,8 +27,6 @@ import controller.EmployeeController;
 import controller.ScheduleController;
 import db.DataAccessException;
 import model.Employee;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 /*
  * Inspiration and kick start for the calendar functionality
@@ -43,27 +41,7 @@ public class ScheduleGUI extends JFrame {
 	private PanelCalendar calendarPanel;
 	private JLabel lblMonthYear;
 	private JComboBox<Employee> chooseEmployee;
-	private static UpdateThread updateThread;
 	
-	/**
-	 * Launch the application.
-	 * @throws DataAccessException 
-	 */
-	public static void main(String[] args) throws DataAccessException {
-		updateThread = new UpdateThread();
-		updateThread.start();
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ScheduleGUI frame = new ScheduleGUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	/**
 	 * Create the frame.
 	 * @throws DataAccessException 
@@ -106,6 +84,15 @@ public class ScheduleGUI extends JFrame {
 		topPanel.add(lblTitle, gbc_lblTitle);
 		
 		JButton btnSaveSchedule = new JButton("Frigiv Vagtplan");
+		btnSaveSchedule.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					validateSchedule();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnSaveSchedule.setBackground(new Color(255, 255, 255));
 		btnSaveSchedule.setFont(new Font("Arial", Font.PLAIN, 14));
 		GridBagConstraints gbc_btnSaveSchedule = new GridBagConstraints();
@@ -188,7 +175,7 @@ public class ScheduleGUI extends JFrame {
 	}
 
 	private void init() throws DataAccessException {
-		//chooseEmployee.setRenderer(new EmployeeLinesRenderer());
+		chooseEmployee.setRenderer(new EmployeeLinesRenderer());
 		scheduleController = new ScheduleController();
 		employeeController = new EmployeeController();
 		scheduleController.createSchedule("initial schedule", "no description");
@@ -228,6 +215,12 @@ public class ScheduleGUI extends JFrame {
 		date = date.plusMonths(1);
 		calendarPanel.setDate(date.getMonthValue(), date.getYear(), scheduleController.getCurrentSchedule().getPeriods());
 		updateMonthYearLabel();
+	}
+	
+	private void validateSchedule() throws SQLException {
+		// validate if schedule is ready for launch
+		scheduleController.saveSchedule();
+		dispose();
 	}
 	
 	/*
