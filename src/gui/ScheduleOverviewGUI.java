@@ -1,116 +1,96 @@
 package gui;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import model.Schedule;
-
-import javax.swing.JScrollPane;
-import java.awt.GridLayout;
-import java.util.ArrayList;
-import javax.swing.JList;
 import java.awt.BorderLayout;
 import java.awt.Font;
-import javax.swing.border.LineBorder;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 
 import db.DataAccessException;
 import db.ScheduleDB;
-
-import java.awt.Color;
-
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.awt.event.ActionEvent;
+import model.Schedule;
 
 public class ScheduleOverviewGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private static UpdateThread updateThread;
-	private static DefaultListModel<String> listModel;
-
+	private JList<Schedule> lstSchedules;
+	private ScheduleDB scheduleDB;
 	
-	public static void main(String[] args) throws DataAccessException {
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ScheduleOverviewGUI frame = new ScheduleOverviewGUI();
-					frame.setVisible(true);
-					updateThread = new UpdateThread(frame.getListModel()); // UpdateThread henter alle schedules fra databasen
-					updateThread.start();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		
-		
-	}
-	
-	public DefaultListModel<String> getListModel() {
-        return listModel;
-    }
-
 	/**
 	 * Create the frame.
+	 * @throws DataAccessException 
 	 */
-	public ScheduleOverviewGUI() {
-		
-		listModel = new DefaultListModel<>();
-		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public ScheduleOverviewGUI() throws DataAccessException {
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
+		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-		contentPane.setLayout(new GridLayout(1, 0, 0, 0));
+		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel = new JPanel();
-		contentPane.add(panel);
-		panel.setLayout(new BorderLayout(0, 0));
+		JLabel lblTitle = new JLabel("Vagtplaner");
+		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitle.setFont(new Font("Arial", Font.BOLD, 16));
+		contentPane.add(lblTitle, BorderLayout.NORTH);
+        
+        JScrollPane scrollPane = new JScrollPane();
+        contentPane.add(scrollPane, BorderLayout.CENTER);
+        
+        lstSchedules = new JList<Schedule>();
+        lstSchedules.setFont(new Font("Arial", Font.PLAIN, 14));
+        scrollPane.setViewportView(lstSchedules);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		panel.add(scrollPane, BorderLayout.SOUTH);
 		
-        JList<String> list = new JList<>(listModel); // Listen over Schedules
-		list.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		list.setFont(new Font("Arial", Font.PLAIN, 14));
-		scrollPane.setViewportView(list);
 		
-		JButton btnAddTestData = new JButton("Add Test Data");
-		btnAddTestData.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					addTestData();
-				} catch (DataAccessException e1) {
-					e1.printStackTrace();
-				}
+		
+        
+		init();
+	}
+	
+	
+	private void init() throws DataAccessException {
+		lstSchedules.setCellRenderer(new ScheduleLinesRenderer());
+		scheduleDB = new ScheduleDB();
+		Thread updateThread = new UpdateThread(this);
+		updateThread.start();
+		updateSchedulesList();
+	}
+	
+	public void updateSchedulesList() throws DataAccessException {
+		SwingUtilities.invokeLater(() -> {
+			try {
+				DefaultListModel<Schedule> dlm = new DefaultListModel<Schedule>();
+				dlm.addAll(scheduleDB.findAllSchedules());
+				lstSchedules.setModel(dlm);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
-		panel.add(btnAddTestData, BorderLayout.NORTH);
-		
 	}
 	
 	
-	public static void addTestData() throws DataAccessException {
-		ScheduleDB scheduleDB = new ScheduleDB();
-		Schedule schedule = new Schedule("test", "test");
-		schedule.setDate(LocalDate.now());
-		try {
-			scheduleDB.saveSchedule(schedule);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-		
 	
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

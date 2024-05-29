@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+import javax.swing.JFrame;
+
 import controller.EmployeeController;
 import controller.PatientController;
 import controller.ScheduleController;
@@ -12,11 +14,14 @@ import model.Employee;
 import model.Patient;
 
 public class Main {
+	/*
 	private static EmployeeController employeeController;
 	private static PatientController patientController;
 	private static ScheduleController scheduleController;
+	*/
 	
 	public static void main(String[] args) throws DataAccessException, SQLException {
+		/*
 		employeeController = new EmployeeController();
 		patientController = new PatientController();
 		scheduleController = new ScheduleController();
@@ -41,6 +46,9 @@ public class Main {
 		scheduleController.addPeriod();
 
 		scheduleController.saveSchedule();
+		*/
 		
+		JFrame mainMenu = new MainMenu();
+		mainMenu.setVisible(true);
 	}
 }

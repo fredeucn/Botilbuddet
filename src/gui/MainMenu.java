@@ -1,31 +1,21 @@
 package gui;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.FlowLayout;
 import java.awt.BorderLayout;
-import javax.swing.JLabel;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.CardLayout;
-import javax.swing.SpringLayout;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import net.miginfocom.swing.MigLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.BoxLayout;
-import java.awt.event.ActionListener;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import db.DataAccessException;
 
 public class MainMenu extends JFrame {
 
@@ -69,30 +59,46 @@ public class MainMenu extends JFrame {
 		contentPane.add(buttonsPanel, BorderLayout.CENTER);
 		
 		JButton btnCreateSchedule = new JButton("Lav ny vagtplan");
+		btnCreateSchedule.setBackground(SystemColor.window);
 		btnCreateSchedule.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					createScheduleClicked();
+				} catch (DataAccessException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnCreateSchedule.setFont(new Font("Arial", Font.PLAIN, 14));
 		
 		JButton btnShowSchedules = new JButton("Se vagtplaner");
+		btnShowSchedules.setBackground(SystemColor.window);
 		btnShowSchedules.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					showSchedulesClicked();
+				} catch (DataAccessException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnShowSchedules.setFont(new Font("Arial", Font.PLAIN, 14));
 		
 		JButton btnShowPatients = new JButton("Se patienter");
+		btnShowPatients.setBackground(SystemColor.window);
 		btnShowPatients.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				showPatientsClicked();
 			}
 		});
 		btnShowPatients.setEnabled(false);
 		btnShowPatients.setFont(new Font("Arial", Font.PLAIN, 14));
 		
 		JButton btnShowEmployees = new JButton("Se medarbejdere");
+		btnShowEmployees.setBackground(SystemColor.window);
 		btnShowEmployees.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				showEmployeeClicked();
 			}
 		});
 		btnShowEmployees.setEnabled(false);
@@ -103,6 +109,26 @@ public class MainMenu extends JFrame {
 		buttonsPanel.add(btnShowSchedules);
 		buttonsPanel.add(btnShowPatients);
 		buttonsPanel.add(btnShowEmployees);
+	}
+
+	private void showEmployeeClicked() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void showPatientsClicked() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void showSchedulesClicked() throws DataAccessException {
+		JFrame schedulesListGUI = new ScheduleOverviewGUI();
+		schedulesListGUI.setVisible(true);
+	}
+
+	private void createScheduleClicked() throws DataAccessException {
+		JFrame scheduleGUI = new ScheduleGUI();
+		scheduleGUI.setVisible(true);
 	}
 
 }
