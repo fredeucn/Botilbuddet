@@ -32,9 +32,7 @@ public class ScheduleOverviewGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private static String[] schedules = {"test"};
 	private static UpdateThread updateThread;
-	private static ArrayList<Schedule> test;
 	private static DefaultListModel<String> listModel;
 
 	/**
@@ -43,14 +41,12 @@ public class ScheduleOverviewGUI extends JFrame {
 	 */
 	public static void main(String[] args) throws DataAccessException {
 		
-		test = new ArrayList<>();
-		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					ScheduleOverviewGUI frame = new ScheduleOverviewGUI();
 					frame.setVisible(true);
-					updateThread = new UpdateThread(frame.getListModel());
+					updateThread = new UpdateThread(frame.getListModel()); // UpdateThread henter alle schedules fra databasen
 					updateThread.start();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -87,7 +83,7 @@ public class ScheduleOverviewGUI extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		panel.add(scrollPane, BorderLayout.SOUTH);
 		
-        JList<String> list = new JList<>(listModel);
+        JList<String> list = new JList<>(listModel); // Listen over Schedules
 		list.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		list.setFont(new Font("Arial", Font.PLAIN, 14));
 		scrollPane.setViewportView(list);
@@ -109,6 +105,7 @@ public class ScheduleOverviewGUI extends JFrame {
 		
 		
 	}
+	
 	
 	public static void addTestData() throws DataAccessException {
 		ScheduleDB scheduleDB = new ScheduleDB();
