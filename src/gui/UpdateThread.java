@@ -13,6 +13,12 @@ import model.Schedule;
 
 public class UpdateThread extends Thread {
 
+	/*
+	 * UpdateThread klassens arbejde, er at hente alle Schedules fra databasen med et fast interval,
+	 * og derefter gemmer den informationen i en DefaultListModel, som kan vises i ScheduleOverviewGUI via en JList
+	 */
+	
+	
 	private int sleepTimer;
 	private ArrayList<Schedule> schedules;
 	private ScheduleDB scheduleDB;

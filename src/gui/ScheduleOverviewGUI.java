@@ -35,10 +35,7 @@ public class ScheduleOverviewGUI extends JFrame {
 	private static UpdateThread updateThread;
 	private static DefaultListModel<String> listModel;
 
-	/**
-	 * Launch the application.
-	 * @throws DataAccessException 
-	 */
+	
 	public static void main(String[] args) throws DataAccessException {
 		
 		EventQueue.invokeLater(new Runnable() {
@@ -94,15 +91,11 @@ public class ScheduleOverviewGUI extends JFrame {
 				try {
 					addTestData();
 				} catch (DataAccessException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
 		});
 		panel.add(btnAddTestData, BorderLayout.NORTH);
-		
-		
-		
 		
 	}
 	
@@ -114,7 +107,6 @@ public class ScheduleOverviewGUI extends JFrame {
 		try {
 			scheduleDB.saveSchedule(schedule);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

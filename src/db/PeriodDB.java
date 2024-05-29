@@ -30,7 +30,7 @@ public class PeriodDB implements PeriodDAO{
 	public void savePeriod(Shift shift, int scheduleId) throws SQLException {
 		savePeriod.setTimestamp(1, java.sql.Timestamp.valueOf(shift.getStartTime()));
 		savePeriod.setTimestamp(2, java.sql.Timestamp.valueOf(shift.getEndTime()));
-		savePeriod.setInt(3, scheduleId);
+		savePeriod.setInt(3, scheduleId); // forbinder Period med det rigtige Schedule i database
 		savePeriod.setInt(4, shift.getEmployee().getEmployeeId());
 		savePeriod.setInt(5, 1);
 		savePeriod.executeUpdate();
@@ -39,7 +39,7 @@ public class PeriodDB implements PeriodDAO{
 		
 		ResultSet key = savePeriod.getGeneratedKeys();
 		if(key.next()) {
-			periodId = key.getInt(1);
+			periodId = key.getInt(1); // PeriodID forbinder Period og Shift i database
 		}
 		
 		key.close();
