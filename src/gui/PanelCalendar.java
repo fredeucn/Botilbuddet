@@ -97,7 +97,7 @@ public class PanelCalendar extends JPanel {
 		lør.setTitle(true);
 		søn.setTitle(true);
 		today = LocalDate.now();
-        setDate(today.getMonthValue(), today.getYear(), null);
+	    setDate(today.getMonthValue(), today.getYear(), null);
 	}
 	
 	public void updateCalendar(ArrayList<Period> periods) {
