@@ -47,5 +47,4 @@ class ScheduleDBTest {
 	void test2() {
 		assertDoesNotThrow(()-> testSchedule.addPeriod(testPeriod));
 	}
-
 }

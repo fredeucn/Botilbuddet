@@ -22,5 +22,4 @@ class EmployeeControllerTest {
 	void test() throws DataAccessException {
 		assertEquals(employeeController.findEmployeeById(3).getName(), "Lea Litter");
 	}
-
 }

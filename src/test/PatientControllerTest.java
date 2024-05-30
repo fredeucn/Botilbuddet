@@ -20,5 +20,4 @@ class PatientControllerTest {
 	void test() throws DataAccessException {
 		assertEquals(patientController.findPatientById(2).getName(), "Sin Zypat Ent");
 	}
-	
 }
